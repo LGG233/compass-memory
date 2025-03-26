@@ -1,74 +1,72 @@
-<<<<<<< HEAD
-# compass-memory
-=======
-# Getting Started with Create React App
+# 🧭 Compass – Memory Companion
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+*A personal AI assistant to help people with memory issues stay grounded, remember what matters, and move through life with intention.*
 
-## Available Scripts
+Compass is a React-based web app designed to support users with forgetfulness, aging-related memory loss, or executive functioning challenges. It blends thoughtful design with intelligent features like AI-enhanced reminders, contextual suggestions, and simple memory logging.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🌟 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- ✅ **Morning Flow Check-In** – Start your day with a mood check, a chance to share what’s on your mind, and space to prioritize.
+- 🧠 **Memory Keeper** – Log anything you want to remember: reminders, notes, events, and conversations.
+- 💡 **Compass AI Insight Engine** – Rephrases and categorizes your thoughts using GPT-3.5, suggesting type and urgency.
+- 📦 **Local storage** – Your memories persist even after refreshing or closing the app.
+- 📆 **Archived memory view** – Review dismissed reminders later, with date and type.
+- ✏️ **Full editing support** – Update or delete entries via a clean modal UI.
+- 🧘 **Active vs Passive Reminders** – Built-in support for contextual vs time-sensitive memories.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🧰 Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React** (via Create React App)
+- **Tailwind CSS** for styling
+- **OpenAI API** (GPT-3.5-turbo-0125)
+- **LocalStorage** (for now — planning Supabase/Postgres backend)
+- **Notion** (used for internal task tracking and planning)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚧 Coming Soon
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- AI-powered contextual reminders (e.g., "Mary has class now — maybe text her later")
+- Timeline view or calendar integration
+- Google Calendar sync (optional)
+- Personalized AI agent behaviors per user
+- Authentication and backend storage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🛠 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Clone the repo:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   git clone https://github.com/LGG233/compass-memory.git  
+   cd compass-memory
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. Install dependencies:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   npm install
 
-## Learn More
+3. Add your OpenAI key to a `.env` file:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   REACT_APP_OPENAI_API_KEY=your_key_here
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. Start the development server:
 
-### Code Splitting
+   npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📄 License
 
-### Analyzing the Bundle Size
+This project is currently private and not licensed for public distribution. Licensing details TBD.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 💬 Questions or Ideas?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Feel free to open an issue or send a message! Feedback, feature ideas, or collaboration interest is welcome.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
->>>>>>> 039cb00 (Initialize project using Create React App)
+ “A companion for living with intention.”
