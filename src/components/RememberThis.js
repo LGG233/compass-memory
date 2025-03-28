@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { loadUserProfile } from "../utils/userProfile";
+import { buildProfileSummary } from "../utils/profileHelpers";
 
 const RememberThis = ({ onSave }) => {
     const [text, setText] = useState("");
@@ -33,6 +35,26 @@ const RememberThis = ({ onSave }) => {
         setLoading(true);
         setAiSuggestion(null);
 
+        const userProfile = loadUserProfile();
+        const profileSummary = buildProfileSummary(userProfile);
+
+        const systemMessage = `
+You are an AI assistant in a memory companion app.
+Use the user's preferences, routines, and relationships to improve your response.
+
+${profileSummary}
+
+Instructions:
+Rephrase the user's input to make it clearer and more specific.
+Then suggest a memory type (reminder, note, event, or follow-up),
+and whether it is active or passive.
+
+Respond in this format:
+
+Improved: [rephrased memory]
+Type: [type]
+Mode: [active or passive]
+`;
         try {
             const response = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
@@ -43,23 +65,8 @@ const RememberThis = ({ onSave }) => {
                 body: JSON.stringify({
                     model: "gpt-3.5-turbo-0125",
                     messages: [
-                        {
-                            role: "system",
-                            content: `You are an AI assistant in a memory companion app.
-                            Rephrase the user's input to make it clearer and more specific.
-                            Then suggest a memory type (reminder, note, event, or follow-up)
-                            and whether it is active or passive.
-                            
-                            Respond in this format:
-                            
-                            Improved: [rephrased memory]
-                            Type: [type]
-                            Mode: [active or passive]`
-                        },
-                        {
-                            role: "user",
-                            content: text,
-                        },
+                        { role: "system", content: systemMessage },
+                        { role: "user", content: text },
                     ],
                 }),
             });

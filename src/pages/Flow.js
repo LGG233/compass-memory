@@ -1,100 +1,94 @@
-// src/pages/Flow.js
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import MorningCheckIn from "../components/MorningCheckIn";
 import MemoryCompanion from "../components/MemoryCompanion";
 import RememberThis from "../components/RememberThis";
 import { loadMemories, saveMemories } from "../utils/memoryStore";
-import TodayTimeline from "../components/TodayTimeline";
+import Section from "../components/Section";
 
 const Flow = () => {
-    const [mood, setMood] = useState("");
-    const [input, setInput] = useState("");
-    const [response, setResponse] = useState("");
     const [memories, setMemories] = useState(() => loadMemories());
-    const [showArchived, setShowArchived] = useState(false);
+    const [lastCheckInDate, setLastCheckInDate] = useState(() => {
+        return localStorage.getItem("lastCheckInDate") || null;
+    });
+    const [showReflectionInput, setShowReflectionInput] = useState(false);
 
-    useEffect(() => {
-        saveMemories(memories);
-    }, [memories]);
+    const today = new Date().toISOString().split("T")[0];
+    const hasCheckedIn = lastCheckInDate === today;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSaveCheckIn = (entry) => {
+        const updated = [...memories, entry];
+        setMemories(updated);
+        saveMemories(updated);
 
-        // Temporary placeholder logic — this will later become AI-powered
-        let reply = "Thanks for checking in.";
-        if (mood === "tired") {
-            reply += " Let’s protect your morning and ease into the day.";
-        } else if (mood === "energized") {
-            reply += " This might be a great day to tackle focused work.";
-        } else if (mood === "meh") {
-            reply += " Maybe keep the schedule light and build momentum slowly.";
-        }
-
-        setResponse(reply);
+        localStorage.setItem("lastCheckInDate", today);
+        setLastCheckInDate(today);
     };
 
+    const handleSaveMemory = (entry) => {
+        const updated = [...memories, entry];
+        setMemories(updated);
+        saveMemories(updated);
+    };
+
+    const activeMemories = memories.filter(
+        (m) => !m.status || m.status === "active"
+    );
+
+    // Split by type
+    const reminders = activeMemories.filter((m) => m.type === "reminder");
+    const events = activeMemories.filter((m) => m.type === "event");
+    const notes = activeMemories.filter((m) => m.type === "note");
+    const reflections = activeMemories.filter(
+        (m) => m.type === "reflection" && m.mood
+    );
+    const observations = activeMemories.filter(
+        (m) => m.type === "reflection" && !m.mood
+    );
+
     return (
-        <div className="p-4 max-w-xl mx-auto space-y-6">
-            <h1 className="text-3xl font-bold">Morning Check-In</h1>
+        <div className="p-4 max-w-3xl mx-auto">
+            <h1 className="text-3xl font-bold mb-6">🧭 My Day with Compass</h1>
 
-            <button
-                onClick={() => setShowArchived(!showArchived)}
-                className="text-sm text-indigo-600 underline hover:text-indigo-800 mb-2"
-            >
-                {showArchived ? "Hide Archived" : "Show Archived"}
-            </button>
-
-            <MemoryCompanion
-                memories={memories}
-                setMemories={setMemories}
-                showArchived={showArchived}
-            />
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block font-medium mb-1">Mood</label>
-                    <select
-                        className="w-full border rounded px-3 py-2"
-                        value={mood}
-                        onChange={(e) => setMood(e.target.value)}
+            {!hasCheckedIn ? (
+                <MorningCheckIn onSave={handleSaveCheckIn} />
+            ) : (
+                <div className="mb-6">
+                    <p className="text-sm text-gray-600 italic mb-2">
+                        You’ve already checked in today.
+                    </p>
+                    <button
+                        onClick={() => setShowReflectionInput(true)}
+                        className="text-sm text-indigo-600 underline hover:text-indigo-800"
                     >
-                        <option value="">Select your mood</option>
-                        <option value="tired">😴 Tired</option>
-                        <option value="meh">😐 Meh</option>
-                        <option value="energized">⚡ Energized</option>
-                    </select>
-                </div>
+                        + Add Additional Reflection
+                    </button>
+                    {reminders.length > 0 && (
+                        <Section title="🔔 Reminders" items={reminders} />
+                    )}
 
-                <div>
-                    <label className="block font-medium mb-1">What's on your mind?</label>
-                    <textarea
-                        className="w-full border rounded px-3 py-2"
-                        rows="3"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Big meeting? No plans? Anything you want to share..."
-                    />
-                </div>
+                    {events.length > 0 && (
+                        <Section title="📆 Events" items={events} />
+                    )}
 
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                    Submit
-                </button>
-            </form>
+                    {notes.length > 0 && (
+                        <Section title="📝 Notes" items={notes} />
+                    )}
 
-            {response && (
-                <div className="mt-6 p-4 border rounded bg-gray-50">
-                    <p className="font-semibold text-indigo-600">Compass says:</p>
-                    <p className="mt-2 text-gray-800">{response}</p>
+                    {reflections.length > 0 && (
+                        <Section title="🪞 Your Reflections" items={reflections} />
+                    )}
+
+                    {observations.length > 0 && (
+                        <Section title="🧭 Compass Observations" items={observations} />
+                    )}
                 </div>
             )}
 
-            {/* ✅ RememberThis input for adding new memories */}
-            <RememberThis
-                onSave={(newMemory) => setMemories([newMemory, ...memories])}
-            />
-            <TodayTimeline memories={memories} />
+            {showReflectionInput && (
+                <RememberThis onSave={handleSaveMemory} />
+            )}
+
+            <MemoryCompanion memories={memories} setMemories={setMemories} />
         </div>
     );
 };
